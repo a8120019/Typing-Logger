@@ -11,7 +11,8 @@
 
 	<script>
 		osql.requireLogin();
-		var keyLogging = false;
+		var startLogging = false;
+		var keyLogs = [];
 		document.addEventListener("keypress", keyPressEvent);
 
 		$(document).ready(function () {
@@ -19,9 +20,9 @@
 		});
 
 		function keyPressEvent(e) {
-			if (e.keyCode == 32 && keyLogging == false) {  // Spaceを押した際の処理
+			if (e.keyCode == 32 && startLogging == false) {  // Spaceを押した際の処理
 				// log取得開始の合図
-				keyLogging == true;
+				startLogging = true;
 				// textareaの内容を空に
 				var typefield = document.getElementById("typingfield");
 				typefield.value = "";
@@ -29,15 +30,26 @@
 				typefield.readOnly = false;
 				// textareaにフォーカスを合わせる
 				typefield.focus();
+				var key_type = e.code;
+				var now = new Date();
+				var key_time = now.getTime();
+			} else if (startLogging == true) {  // 計測開始後の処理
+				var key_type = e.key;
+				var now = new Date();
+				var key_time = now.getTime();
+			}
+			if (key_type) {  // キーが計測されていた場合の処理
+				var key_dict = {};
+				key_dict.key = key_type;
+				key_dict.time = key_time;
+
+				keyLogs.push(key_dict);
 			}
 		}
 
-		async function getUserData() {
-			var me = await osql.getMe();
-			console.log(me);
-			// var sql = `insert ignore into Users (id, fname, lname) values ("${me.id}", "${me.fname}", "${me.lname}");`;
-			// await osql.connect(sql);
-			// document.getElementById('name').innerHTML = me.fname + " " + me.lname;
+		function buttonPressed() {
+			// ログ確認
+			console.log(keyLogs);
 		}
 
 	</script>
