@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<link rel="stylesheet" href="index.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<script type="text/javascript" src="lib/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/osql.js"></script>
+
+	<script>
+		osql.requireLogin();
+
+		$(document).ready(function () {
+			// functions
+		});
+
+		async function buttonPressed() {
+			// studentidを取得
+			var studentid = document.getElementById("addstudentid").value;
+
+			// studentidをUsersから検索 → idを取得
+			var sql = `select * from Users where studentid = ${studentid}`;
+			var users = await osql.connect(sql);
+
+			// idを用いてTypingsから記録一覧を取得
+			var sql = `select * from Typings where userid = "${users[0].id}"`;
+			var typings = await osql.connect(sql);
+
+			// 記録一覧をrecordsに表示
+			var html = "";
+			html += "<ul>";
+			for (var i = 0; i < typings.length; i++) {
+				html += "<li>";
+
+				html += `<a href="javascript:void(0)" onclick=showLogs(${typings[i].typingid})>`;
+				html += `${typings[i].date}`;
+				html += "</a>";
+				
+				html += "</li>";
+			}
+			html += "</ul>"
+			document.getElementById("records").innerHTML = html;
+		
+		}
+
+		async function showLogs(typingid) {
+			// sentenceの表示
+
+			// Logsの表示
+		}
+
+
+
+			// ログ確認
+			console.log(keyLogs);
+			var typefield = document.getElementById("typingfield");
+			console.log(typefield.value);
+
+			// 操作無効化
+			typefield.readOnly = true;
+
+			// 表示: 送信中
+			document.getElementById("confirm").innerHTML = "送信中...";
+
+			// SQL送信
+			// - Typings登録
+			var me = await osql.getMe();
+			var sql = `insert into Typings (userid, sentence, date) values ("${me.id}", "${typefield.value}", now());`;
+			await osql.connect(sql);
+
+			// - typingid取得
+			var sql = `select * from Typings where userid = "${me.id}" order by typingid desc;`;
+			var typings = await osql.connect(sql);
+			var catch_typingid = typings[0].typingid;
+
+			// - Logs登録
+			var key_text;
+			var key_time;
+			for (var i = 0; i < keyLogs.length; i++){
+				key_text = keyLogs[i].key;
+				key_time = keyLogs[i].time;
+
+				var sql = `insert into Logs (id, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+				await osql.connect(sql);
+			}
+
+			// 表示: 送信完了メッセージ
+			document.getElementById("confirm").innerHTML = "送信完了!";
+
+	</script>
+
+</head>
+
+<body>
+	<h1>確認ページ</h1>
+	<input id="addstudentid" placeholder="学籍番号を入力">
+	<button onclick="buttonPressed()">確認</button>
+	<br>
+	<span id="records"></span>
+	<hr>
+	<span id="showinglogs"></span>
+
+</body>
+
+</html>
