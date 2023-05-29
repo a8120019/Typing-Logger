@@ -15,10 +15,6 @@
 		var keyLogs = [];
 		document.addEventListener("keydown", keyPressEvent);
 
-		$(document).ready(function () {
-			// functions
-		});
-
 		function keyPressEvent(e) {
 			if (e.keyCode == 32 && startLogging == false) {  // Spaceを押した際の処理
 				// log取得開始の合図
@@ -55,6 +51,8 @@
 
 			if (startLogging == true) {  // 記録を開始している時のみ有効
 
+				var typefield = document.getElementById("typingfield");
+
 				// 操作無効化
 				startLogging = false;
 				typefield.readOnly = true;
@@ -76,7 +74,7 @@
 				// - Logs登録
 				var key_text;
 				var key_time;
-				for (var i = 0; i < keyLogs.length; i++){
+				for (var i = 0; i < keyLogs.length; i++) {
 					key_text = keyLogs[i].key;
 					key_time = keyLogs[i].time;
 
