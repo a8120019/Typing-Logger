@@ -18,6 +18,12 @@
 
 		async function getUserData() {
 			var me = await osql.getMe();
+			// UserData
+			// fname: "Takahiro"
+			// id: "a8120019@gsuite.si.aoyama.ac.jp"
+			// ip: "210.137.33.94"
+			// lname: "Ishikawa"
+			// studentid: "18120019"
 			console.log(me);
 			// var sql = `insert ignore into Users (id, fname, lname) values ("${me.id}", "${me.fname}", "${me.lname}");`;
 			// await osql.connect(sql);
