@@ -23,9 +23,12 @@
 				// log取得開始の合図
 				keyLogging == true;
 				// textareaの内容を空に
-				document.getElementById("typingfield").value = "";
+				var typefield = document.getElementById("typingfield");
+				typefield.value = "";
 				// textareaの編集を可能に
+				typefield.readOnly = false;
 				// textareaにフォーカスを合わせる
+				typefield.focus();
 			}
 		}
 
