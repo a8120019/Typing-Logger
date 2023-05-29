@@ -21,11 +21,11 @@
 			var studentid = document.getElementById("addstudentid").value;
 
 			// studentidをUsersから検索 → idを取得
-			var sql = `select * from Users where studentid = ${studentid}`;
+			var sql = `select * from Users where studentid = ${studentid};`;
 			var users = await osql.connect(sql);
 
 			// idを用いてTypingsから記録一覧を取得
-			var sql = `select * from Typings where userid = "${users[0].id}"`;
+			var sql = `select * from Typings where userid = "${users[0].id}";`;
 			var typings = await osql.connect(sql);
 
 			// 記録一覧をrecordsに表示
@@ -46,9 +46,37 @@
 		}
 
 		async function showLogs(typingid) {
-			// sentenceの表示
+			// sentence
+			var html = "";
+			html += "<h2>原文</h2>";
+			// - sentenceの取得
+			var sql = `select sentence from Typings where typingid = ${typingid};`;
+			var sentence = await osql.connect(sql);
+			// - sentenceの表示
+			html += `${sentence[0].sentence}`;
+			document.getElementById("showsentence").innerHTML = html;
 
-			// Logsの表示
+			// logs
+			var html = "";
+			html += "<h2>入力履歴</h2>";
+			// - logsの取得
+			var sql = `select * from Logs where id = ${typingid};`;
+			var logs = await osql.connect(sql);
+			// - logsの表示
+			html += "<table>"
+			html += "<tr><th>キー</th><th>時間</th></tr>"
+
+			for (var i = 0; i < logs.length; i++) {
+				html += "<tr>";
+				
+				// キー
+
+				// 時間
+				
+				html += "</tr>";
+			}
+			
+			html += "</table>"
 		}
 
 
@@ -100,7 +128,9 @@
 	<br>
 	<span id="records"></span>
 	<hr>
-	<span id="showinglogs"></span>
+	<span id="showsentence"></span>
+	<br>
+	<span id="showlogs"></span>
 
 </body>
 
