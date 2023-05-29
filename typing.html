@@ -11,6 +11,7 @@
 
 	<script>
 		osql.requireLogin();
+		var keyLogging = false;
 		document.addEventListener("keypress", keyPressEvent);
 
 		$(document).ready(function () {
@@ -18,9 +19,11 @@
 		});
 
 		function keyPressEvent(e) {
-			if (e.keyCode == 32) {  // Spaceを押した際の処理
+			if (e.keyCode == 32 && keyLogging == false) {  // Spaceを押した際の処理
 				// log取得開始の合図
+				keyLogging == true;
 				// textareaの内容を空に
+				document.getElementById("typingfield").value = "";
 				// textareaの編集を可能に
 				// textareaにフォーカスを合わせる
 			}
