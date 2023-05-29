@@ -24,10 +24,9 @@
 			// ip: "210.137.33.94"
 			// lname: "Ishikawa"
 			// studentid: "18120019"
-			console.log(me);
-			// var sql = `insert ignore into Users (id, fname, lname) values ("${me.id}", "${me.fname}", "${me.lname}");`;
-			// await osql.connect(sql);
-			// document.getElementById('name').innerHTML = me.fname + " " + me.lname;
+			var sql = `insert ignore into Users (id, fname, lname) values ("${me.studentid}", "${me.fname}", "${me.lname}");`;
+			await osql.connect(sql);
+			document.getElementById('name').innerHTML = me.fname + " " + me.lname;
 		}
 
 	</script>
