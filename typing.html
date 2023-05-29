@@ -49,40 +49,46 @@
 
 		async function buttonPressed() {
 			// ログ確認
-			console.log(keyLogs);
-			var typefield = document.getElementById("typingfield");
-			console.log(typefield.value);
+			// console.log(keyLogs);
+			// var typefield = document.getElementById("typingfield");
+			// console.log(typefield.value);
 
-			// 操作無効化
-			typefield.readOnly = true;
+			if (startLogging == true) {  // 記録を開始している時のみ有効
 
-			// 表示: 送信中
-			document.getElementById("confirm").innerHTML = "送信中...";
+				// 操作無効化
+				startLogging = false;
+				typefield.readOnly = true;
 
-			// SQL送信
-			// - Typings登録
-			var me = await osql.getMe();
-			var sql = `insert into Typings (userid, sentence, date) values ("${me.id}", "${typefield.value}", now());`;
-			await osql.connect(sql);
+				// 表示: 送信中
+				document.getElementById("confirm").innerHTML = "送信中...";
 
-			// - typingid取得
-			var sql = `select * from Typings where userid = "${me.id}" order by typingid desc;`;
-			var typings = await osql.connect(sql);
-			var catch_typingid = typings[0].typingid;
-
-			// - Logs登録
-			var key_text;
-			var key_time;
-			for (var i = 0; i < keyLogs.length; i++){
-				key_text = keyLogs[i].key;
-				key_time = keyLogs[i].time;
-
-				var sql = `insert into Logs (id, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+				// SQL送信
+				// - Typings登録
+				var me = await osql.getMe();
+				var sql = `insert into Typings (userid, sentence, date) values ("${me.id}", "${typefield.value}", now());`;
 				await osql.connect(sql);
-			}
 
-			// 表示: 送信完了メッセージ
-			document.getElementById("confirm").innerHTML = "送信完了!";
+				// - typingid取得
+				var sql = `select * from Typings where userid = "${me.id}" order by typingid desc;`;
+				var typings = await osql.connect(sql);
+				var catch_typingid = typings[0].typingid;
+
+				// - Logs登録
+				var key_text;
+				var key_time;
+				for (var i = 0; i < keyLogs.length; i++){
+					key_text = keyLogs[i].key;
+					key_time = keyLogs[i].time;
+
+					var sql = `insert into Logs (id, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+					await osql.connect(sql);
+				}
+
+				// 表示: 送信完了メッセージ
+				document.getElementById("confirm").innerHTML = "送信完了!";
+			} else {  // 開始していない時はエラーメッセージ
+				document.getElementById("confirm").innerHTML = "記録を開始していません";
+			}
 		}
 
 	</script>
