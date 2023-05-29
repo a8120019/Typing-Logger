@@ -13,7 +13,7 @@
 		osql.requireLogin();
 		var startLogging = false;
 		var keyLogs = [];
-		document.addEventListener("keypress", keyPressEvent);
+		document.addEventListener("keydown", keyPressEvent);
 
 		$(document).ready(function () {
 			// functions
@@ -35,9 +35,6 @@
 				var key_time = now.getTime();
 			} else if (startLogging == true) {  // 計測開始後の処理
 				var key_type = e.key;
-				if (!key_type) {
-					key_type = e.code;
-				}
 				var now = new Date();
 				var key_time = now.getTime();
 			}
