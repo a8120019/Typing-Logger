@@ -79,8 +79,11 @@
 					key_text = keyLogs[i].key;
 					key_time = keyLogs[i].time;
 					var sql = `insert into Logs (sessionid, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+					// sqls.push(sql);
 					await osql.connect(sql);
 				}
+
+				// await osql.connect(sqls);
 
 				// 表示: 送信完了メッセージ
 				document.getElementById("confirm").innerHTML = "送信完了!";
