@@ -11,16 +11,16 @@
 
 	<script>
 		osql.requireLogin();
-		var startLogging = false;
+		var typefield;
 		var keyLogs = [];
 		document.addEventListener("keydown", keyPressEvent);
 
 		function keyPressEvent(e) {
-			if (e.keyCode == 32 && startLogging == false) {  // Spaceを押した際の処理
-				// log取得開始の合図
-				startLogging = true;
+			if (!typefield) {
+				typefield = document.getElementById("typingfield");
+			}
+			if (e.keyCode == 32 && typefield.readOnly == true) {  // Spaceを押した際の処理
 				// textareaの内容を空に
-				var typefield = document.getElementById("typingfield");
 				typefield.value = "";
 				// textareaの編集を可能に
 				typefield.readOnly = false;
@@ -29,7 +29,7 @@
 				var key_type = e.code;
 				var now = new Date();
 				var key_time = now.getTime();
-			} else if (startLogging == true) {  // 計測開始後の処理
+			} else if (typefield.readOnly == false && typefield.disabled == true) {  // 計測開始後の処理
 				var key_type = e.key;
 				var now = new Date();
 				var key_time = now.getTime();
@@ -49,13 +49,10 @@
 			// var typefield = document.getElementById("typingfield");
 			// console.log(typefield.value);
 
-			if (startLogging == true) {  // 記録を開始している時のみ有効
-
-				var typefield = document.getElementById("typingfield");
+			if (typefield.readOnly == false && typefield.disabled == false) {  // 記録を開始している時のみ有効
 
 				// 操作無効化
-				startLogging = false;
-				typefield.readOnly = true;
+				typefield.disabled = true;
 
 				// 表示: 送信中
 				document.getElementById("confirm").innerHTML = "送信中...";
