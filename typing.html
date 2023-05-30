@@ -69,7 +69,7 @@
 				// - typingid取得
 				var sql = `select * from Sessions where userid = "${me.id}" order by id desc;`;
 				var typings = await osql.connect(sql);
-				var catch_typingid = typings[0].typingid;
+				var catch_typingid = typings[0].id;
 
 				// - Logs登録
 				var key_text;
