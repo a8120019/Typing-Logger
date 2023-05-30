@@ -78,7 +78,7 @@
 				for (var i = 0; i < keyLogs.length; i++) {
 					key_text = keyLogs[i].key;
 					key_time = keyLogs[i].time;
-					var sql = `insert into Logs (sessoinid, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+					var sql = `insert into Logs (sessionid, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
 					sqls.push(sql);
 				}
 
