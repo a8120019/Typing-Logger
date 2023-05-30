@@ -21,7 +21,7 @@
 			var users = await osql.connect(sql);
 
 			// idを用いてTypingsから記録一覧を取得
-			var sql = `select * from Typings where userid = "${users[0].id}";`;
+			var sql = `select * from Sessions where userid = "${users[0].id}";`;
 			var typings = await osql.connect(sql);
 
 			// 記録一覧をrecordsに表示
