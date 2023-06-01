@@ -20,7 +20,7 @@
 			if (studentid.substr(0, 1) == "1") {
 				studentid = "a" + studentid.substr(1, 7);
 			}
-			var sql = `select * from Users where id = ${studentid};`;
+			var sql = `select * from Users where id like "%${studentid}%";`;
 			var users = await osql.connect(sql);
 
 			// idを用いてTypingsから記録一覧を取得
