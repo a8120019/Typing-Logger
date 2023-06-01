@@ -92,7 +92,11 @@
 				for (var i = 0; i < keyLogs.length; i++) {
 					key_text = keyLogs[i].key;
 					key_time = keyLogs[i].time;
-					var sql = `insert into Logs (sessionid, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+					if (key_text == '"') {
+						var sql = `insert into Logs (sessionid, text, time) values (${catch_typingid}, '${key_text}', ${key_time});`;
+					} else {
+						var sql = `insert into Logs (sessionid, text, time) values (${catch_typingid}, "${key_text}", ${key_time});`;
+					}
 					// sqls.push(sql);
 					await osql.connect(sql);
 				}
@@ -136,7 +140,9 @@
 	<br>
 	<br>
 
-	<textarea id="typingfield" rows="5" cols="100" readonly>SPACEを押すと開始します</textarea>
+	<textarea id="typingfield" rows="5" cols="100" readonly>開始前に、入力モードを「半角」に設定してください。
+
+SPACEを押すと開始します。</textarea>
 	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
 	<hr>
 	<a href="javascript:void(0)" onclick="osql.logout()">ログアウト</a>
