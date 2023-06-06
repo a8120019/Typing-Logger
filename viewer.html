@@ -24,6 +24,8 @@
 		var keyList = [];
 		var timeList = [];
 
+		var timeBox;
+
 
 		const config = {
 			locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -229,12 +231,52 @@
 				
 				timeList.push(Number(secondTime));
 			}
+
+			// 動画をスペースの時間に合わせる
+			timeBox = 0;
+
+			showNowKey()
 		}
 
 		function showTimes() {
 			var vidfile = document.getElementById("video");
 			var timeNum = vidfile.currentTime;
 			document.getElementById("now-time").value = timeNum;
+		}
+
+		function buttonPrevious() {
+			if (timeBox > 0) {
+				timeBox = timeBox - 1;
+			}
+			showNowKey()
+		}
+
+		function buttonNext() {
+			if (timeBox < keyList.length) {
+				timeBox = timeBox + 1;
+			}
+			showNowKey()
+		}
+
+		function showNowKey() {
+			var vidfile = document.getElementById("video");
+			vidfile.currentTime = Number(timeList[timeBox]);
+			// 前のキー
+			if (timeBox > 0) {
+				document.getElementById("previous-key").innerHTML = keyList[timeBox - 1];
+			} else {
+				document.getElementById("previous-key").innerHTML = "最初";
+			}
+			// 今のキー
+
+			document.getElementById("now-key").innerHTML = keyList[timeBox];
+
+			// 次のキー
+			if (timeBox < keyList.length) {
+				document.getElementById("next-key").innerHTML = keyList[timeBox + 1];
+			} else {
+				document.getElementById("next-key").innerHTML = "最後";
+			}
 		}
 
 	</script>
