@@ -21,11 +21,8 @@
 		var pushList = [];
 
 		// グラフ用の変数
+		var keyList = [];
 		var timeList = [];
-		var leftList = [];
-		var rightList = [];
-		var iLR;
-		var fN;
 
 
 		const config = {
@@ -69,37 +66,37 @@
 
 			if (vidfile.paused) {  // 動画が止まっている場合の処理
 				vidfile.play();
-				setInterval(drawCanvas, 1000 / 30);
+				// setInterval(drawCanvas, 1000 / 30);
 			} else {  // 動画が動いている場合の処理
 				vidfile.pause();
-				clearInterval(drawCanvas);
+				// clearInterval(drawCanvas);
 			}
 		}
 
-		async function drawCanvas() {
+		// async function drawCanvas() {
 
-			// Log用の関数の用意
-			// 左右
-			var elements = document.getElementsByName("finger-lr");
-			let checkValue = '';
+		// 	// Log用の関数の用意
+		// 	// 左右
+		// 	var elements = document.getElementsByName("finger-lr");
+		// 	let checkValue = '';
 
-			for (var i = 0; i < elements.length; i++) {
-				if (elements.item(i).checked) {
-					checkValue = elements.item(i).value;
-				}
-			}
+		// 	for (var i = 0; i < elements.length; i++) {
+		// 		if (elements.item(i).checked) {
+		// 			checkValue = elements.item(i).value;
+		// 		}
+		// 	}
 
-			iLR = checkValue;
+		// 	iLR = checkValue;
 
-			var video = document.getElementById("video");
+		// 	var video = document.getElementById("video");
 
-			const canvas = document.getElementById("input");
-			const ctx = canvas.getContext("2d");
+		// 	const canvas = document.getElementById("input");
+		// 	const ctx = canvas.getContext("2d");
 
-			ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+		// 	ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-			await hands.send({ image: canvas });
-		}
+		// 	await hands.send({ image: canvas });
+		// }
 
 		function onResults(results) {
 			// console.log(results);
@@ -166,115 +163,6 @@
 			}
 		}
 
-		function showPushGraph() {
-			// データの設定
-			var num_index = document.getElementById("finger-index").value;
-			var num_middle = document.getElementById("finger-middle").value;
-			var num_ring = document.getElementById("finger-ring").value;
-			var num_little = document.getElementById("finger-little").value;
-
-			var data_index_left = [];
-			var data_middle_left = [];
-			var data_ring_left = [];
-			var data_little = [];
-
-			var checkLR = ["Left", "Right"]
-			for (var i = 0; i < 2; i++) {
-				for (var j = 0; j < timeList.length; j++) {
-					data_index.push(cordList[checkLR[i]][timeList[j]][i].z);
-				}
-			}
-
-			let context = document.querySelector("#finger-graph").getContext('2d')
-			new Chart(context, {
-				type: 'line',
-				data: {
-					labels: timeList,
-					datasets: [{
-						label: iLR + fN,
-						data: zList,
-					}],
-				}
-			})
-		}
-
-		function checkPushing() {
-			// メモ 1秒だいたい30記録ぐらい
-
-			var pushDetections = [];
-
-			// 閾値設定
-			var minPushHeight = 0.03;
-			// 「押している」判定とする差異の最低値
-			// 上昇値がこの値以下であれば判定外
-			var maxDescentTime = 2;
-			// 「押している」判定の追跡を中断する時間
-			// この時間以内に十分に下降しなければ判定外
-			var difDetachHeight = 0.05;
-			// キーを「離した」と判断する値
-			// 最大高度との差がこの値以上であれば「押下」判定
-			// var minRequiredTime = 0.05;
-			// 急な昇降として判定する時間
-			// この時間以内で値の昇降が見られた場合は判定外
-
-			var pushDetecting = false;
-
-			for (var i = 1; i < timeList.length; i++) {
-				var log_p = zList[i - 1];  // 1個前のデータ
-				var log_c = zList[i];  // 現在のデータ
-
-				if (log_c - log_p > 0) {  // もし上昇していた場合
-
-					if (pushDetecting == false) {  // 検知の始め
-						pushDetecting = true;
-						var pushDetectTime = timeList[i - 1];  // 検知を開始した時間 maxDescentTimeとの比較の際に用いる
-						var pushDetectValue = log_p;  // 検知を開始した際の押している度合いを示す値 minPushHeightとの比較の際に用いる
-						var maxDetectValue = log_c;  // 押している度合いを示す値 更新を行なう値 minPushHeightと比較を行う値
-						var maxDetectTime = timeList[i];  // 押している度合いが最大を示した時間 この値が「押した時間」となる
-					} else {  // 検知中
-						if (maxDetectValue < log_c) {
-							maxDetectValue = log_c;
-							maxDetectTime = timeList[i];
-						}
-					}
-
-				} else {  // もし下降していた場合
-					if (pushDetecting == true) { // 検知中
-
-						var difTime = maxDetectTime - timeList[i];
-						if (maxDescentTime < difTime) {  // もしmaxDescentTimeの時間を超えていた場合
-							// 検知の終了
-							pushDetecting = false;
-							pushDetectTime = 0;
-							pushDetectValue = 0;
-							maxDetectValue = 0;
-							maxDetectTime = 0;
-						} else if (maxDetectValue - log_c >= difDetachHeight) {  // もし「離した」と判断する基準値を超えていた場合
-
-							if (maxDetectValue - pushDetectValue >= minPushHeight) {  // もし押した度合いと検知開始時の値の差が基準を満たしていた場合
-								pushDetections.push(maxDetectTime);
-							}
-
-							// 検知の終了
-							pushDetecting = false;
-							pushDetectTime = 0;
-							pushDetectValue = 0;
-							maxDetectValue = 0;
-							maxDetectTime = 0;
-
-						}
-
-					}
-				}
-			}
-
-			console.log(iLR);
-			console.log(fN);
-
-			console.log(pushDetections);
-
-		}
-
 		function resetVideo() {
 			clearInterval(drawCanvas);
 
@@ -311,72 +199,42 @@
 			}
 		}
 
-		function selectResult() {
-			var resultNumber = document.getElementById("result-index").value;
-			console.log(resultNumber);
-			if (resultNumber) {
-				console.log("--- [result(" + resultNumber + ")] ---");
-				console.log(resultShare.multiHandLandmarks[0][resultNumber].z);
-			}
-		}
+		async function keyTimes() {
+			// nowTimeに現状の秒数を表示する機能 (setInterval)
+			setInterval(showTimes, 1000 / 60);
 
-		async function showKeyboard() {
+			// IDのデータ取得
 			var keyId = document.getElementById("keyboard-id").value;
 			var timeSpace = document.getElementById("space-time").value * 1000;
 
 			var sql = `select * from Logs where sessionid = ${keyId};`;
 			var logs = await osql.connect(sql);
 			var baseTime = logs[0].time;
+			keyList.push("Space");
+			timeList.push(Number(document.getElementById("space-time").value));
 
-			var html = "";
-
-			html += "<table border='1'>"
-			html += "<tr><th>キー</th><th>時間</th><th>原文</th></tr>"
-
-			var sentence = "";
+			// Spaceキーの時間を合わせたデータを変数に保存
 
 			for (var i = 1; i < logs.length; i++) {
-				html += "<tr>";
-
-				// キー
-				html += "<td>";
-				html += `${logs[i].text}`;
-				html += "</td>";
+				//キー
+				keyList.push(logs[i].text);
 
 				// 時間
-				html += "<td>";
 				var time = Number(logs[i].time) + Number(timeSpace);
-				console.log(time);
 
 				var calcTime = time - baseTime;  // 経過時間の計算
 				var sfTime = calcTime / 1000;  // 秒数に変換
 				// var msTime = sfTime - Math.floor(sfTime);
 				var secondTime = sfTime % 60;  // 秒数表示
-				var minuteTime = Math.floor(sfTime / 60);  // 分数表示
-
-				html += `${minuteTime}:${secondTime}`;
-
-				html += "</td>";
-
-				// 原文
-				html += "<td>";
-
-				if (logs[i].text == "Enter") {
-					sentence += "<br>";
-				} else if (logs[i].text == "Backspace") {
-					sentence = sentence.slice(0, -1);
-				} else if (logs[i].text.length == 1) {
-					sentence += logs[i].text;
-				}
-				html += sentence;
-
-				html += "</td>";
-
-				html += "</tr>";
+				
+				timeList.push(Number(secondTime));
 			}
+		}
 
-			html += "</table>"
-			document.getElementById("keyboard-log").innerHTML = html;
+		function showTimes() {
+			var vidfile = document.getElementById("video");
+			var timeNum = vidfile.currentTime;
+			document.getElementById("now-time").value = timeNum;
 		}
 
 	</script>
@@ -391,28 +249,25 @@
 		<br>
 		<input type="file" id="upload" accept="video/*" onchange="vidChanger(this)">
 		<br>
-		<center>現在の時間: <span id="now-time"></center>
+		<center>現在の時間: <span id="now-time">
 		<br>
-		<span id="previous-key"></span> <button id="previous-button">前のキー</button> <span id="now-key"></span> <button id="next-button">次のキー</button> <span id="next-key"></span>
+		<span id="previous-key"></span> <button id="previous-button" onclick="buttonPrevious()">前のキー</button> <span id="now-key"></span> <button id="next-button" onclick="buttonNext()">次のキー</button> <span id="next-key"></span>
+		</center>
 		<br>
 		SessionID: <input id="keyboard-id" type="number">
 		<br>
-		スペースキーを押した時間: <input id="space-time" type="number">
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<canvas id="input" width="680" height="454"></canvas>
+		スペースキーを押した時間: <input id="space-time" type="number"> <button id="space-time-decision" onclick="keyTimes()">適用</button>
+		<!-- <br> -->
+		<!-- <canvas id="input" width="680" height="454"></canvas> -->
 		<!--  認識した手の形状を可視化した映像（出力）  -->
-		<canvas id="output" width="680" height="454"></canvas>
+		<!-- <canvas id="output" width="680" height="454"></canvas> -->
 	</div>
 	<hr>
 	<h3>Console</h3>
 	<br>
-	<button id="videoload" onclick="drawCanvas()">video load</button>
-	<br>
-	<br>
+	<!-- <button id="videoload" onclick="drawCanvas()">video load</button> -->
+	<!-- <br> -->
+	<!-- <br> -->
 	<button id="start" onclick="controlVideo()">start / stop</button>
 	<button id="stop" onclick="resetVideo()">reset</button>
 	<br>
@@ -421,41 +276,6 @@
 	<br>
 	<button id="stop" onclick="timeVideo()">time check</button>
 	<hr>
-	<h3>Logs</h3>
-	<br>
-	<button id="pushchecker" onclick="checkPushing()">check pushing</button>
-	<hr>
-	Graph
-	<input id="finger-index" type="number" value=8>
-	<input id="finger-middle" type="number" value=12>
-	<input id="finger-ring" type="number" value=16>
-	<input id="finger-little" type="number" value=20>
-	<br>
-	<button id="pushgraph" onclick="showPushGraph()">show GRAPH</button>
-	<br>
-	<br>
-	<canvas id="finger-graph" width="500" height="500"></canvas>
-	<hr>
-	<h3>Keyboard</h3>
-	ID: <input id="keyboard-id" type="number">
-	<br>
-	Space: <input id="space-time" type="number">
-	<br>
-	<button id="keyboard-button" onclick="showKeyboard()">Show KeyTime</button>
-	<br>
-	<br>
-	<span id="keyboard-log"></span>
-		<!-- 
-	<button id="wrist" onclick="showResult(0)">手首</button>
-
-	<button id="index" onclick="showResult(8)">人差し指</button>
-	<button id="middle" onclick="showResult(12)">中指</button>
-	<button id="third" onclick="showResult(16)">薬指</button>
-	<button id="pinky" onclick="showResult(20)">小指</button>
-	<br>
-	<input type="number" id="result-index">
-	<button id="result-select" onclick="selectResult()">select</button>
--->
 </body>
 
 </html>
