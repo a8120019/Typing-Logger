@@ -36,13 +36,13 @@
 
 		function keyPressEvent(e) {
 			if (!typefield) {
-				typefield = document.getElementById("typingfield");
+				typefield = document.getElementById("typingfield-1");
 			}
-			if (e.keyCode == 32 && typefield.readOnly == true) {  // Spaceを押した際の処理
+			if (e.keyCode == 32 && typefield.disabled == true) {  // Spaceを押した際の処理
 				// textareaの内容を空に
 				typefield.value = "";
 				// textareaの編集を可能に
-				typefield.readOnly = false;
+				typefield.disabled = false;
 				// textareaにフォーカスを合わせる
 				typefield.focus();
 				var key_type = e.code;
@@ -60,7 +60,23 @@
 
 				keyLogs.push(key_dict);
 				if (key_type == "Enter") {
-					typefield.value = "";
+					var current = document.activeElement;
+					if (current.id == "typingfield-1") {
+						typefield = document.getElementById("typingfield-2");
+						typefield.value = "";
+						typefield.disabled = false;
+						typefield.focus();
+					} else if (current.id == "typingfield-2") {
+						typefield = document.getElementById("typingfield-3");
+						typefield.value = "";
+						typefield.disabled = false;
+						typefield.focus();
+					} else if (current.id == "typingfield-3") {
+						typefield = document.getElementById("typingfield-4");
+						typefield.value = "";
+						typefield.disabled = false;
+						typefield.focus();
+					}
 				}
 			}
 		}
@@ -121,20 +137,25 @@
 
 <body>
 	<h1>指使い測定システム</h1>
-	下の4つの文をアルファベットでタイピングし、その様子を撮影してください。
+	1. キーボードの真上から撮るように、撮影を開始してください。
 	<br>
-	タイピングが終わったら、「送信」ボタンを押してください。
+	2. 下の4つの文をアルファベットでタイピングしてください。
+	<br>
+	3. 入力が完了したら、「送信」ボタンを押して終了してください。
 	<hr>
-	<div style="font-size: 15pt;">1. <B>ジムで体を鍛えているよ</B></div>
-	<div style="font-size: 12pt;">zimudekaradawokitaeteiruyo <img src="Enter_Picture.png" height="1%" width="1%"></div>
-	<div style="font-size: 15pt;">2. <B>豆腐は大豆からできています</B></div>
-	<div style="font-size: 12pt;">toufuhadaizukaradekiteimasu <img src="Enter_Picture.png" height="1%" width="1%"></div>
-	<div style="font-size: 15pt;">3. <B>リビングにジャニーズのポスターを貼る</B></div>
-	<div style="font-size: 12pt;">ribinngunijyani-zunoposuta-woharu <img src="Enter_Picture.png" height="1%" width="1%"></div>
-	<div style="font-size: 15pt;">4. <B>if you understand this question please call me</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
-	<textarea id="typingfield" spellcheck="false" rows="1" cols="100" readonly>入力モードを「半角」に設定してタイピングしてください。
-				
-「スペースキー」を押すと開始します。</textarea>
+	<div style="font-size: 15pt;">1. <B>ジムで体を鍛えているよ</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
+	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zimudekaradawokitaeteiruyo</div>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-1" spellcheck="false" rows="1" cols="100" disabled>「スペースキー」を押すと入力を開始します。</textarea>
+	<div style="font-size: 15pt;">2. <B>豆腐は大豆からできています</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
+	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toufuhadaizukaradekiteimasu</div>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-2" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	<div style="font-size: 15pt;">3. <B>リビングにジャニーズのポスターを貼る</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
+	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ribinngunijyani-zunoposuta-woharu</div>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-3" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	<div style="font-size: 15pt;">4. <B>If you understand this question please call me</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
+	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you understand this question please call me</div>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-4" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	
 	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
 	<!-- <br>
 	<br>
