@@ -17,6 +17,7 @@
 		var sending = false;
 		var typefield;
 		var keyLogs = [];
+		var sentenceLogs = [];
 		document.addEventListener("keydown", keyPressEvent);
 
 		$(document).ready(function () {
@@ -55,31 +56,59 @@
 				var key_time = now.getTime();
 			}
 			if (key_type) {  // キーが計測されていた場合の処理
+				// キーの保存
 				var key_dict = {};
 				key_dict.key = key_type;
 				key_dict.time = key_time;
 
 				keyLogs.push(key_dict);
+
 				if (key_type == "Enter") {
 					var current = document.activeElement;
 					if (current.id == "typingfield-1") {
 						typefield = document.getElementById("typingfield-2");
-						typefield.value = "";
+						if (typefield.value == "「エンターキー」を押すと次の入力欄に進みます。") {
+							typefield.value = "";
+						}
 						typefield.disabled = false;
 						typefield.focus();
 					} else if (current.id == "typingfield-2") {
 						typefield = document.getElementById("typingfield-3");
-						typefield.value = "";
+						if (typefield.value == "「エンターキー」を押すと次の入力欄に進みます。") {
+							typefield.value = "";
+						}
 						typefield.disabled = false;
 						typefield.focus();
 					} else if (current.id == "typingfield-3") {
 						typefield = document.getElementById("typingfield-4");
-						typefield.value = "";
+						if (typefield.value == "「エンターキー」を押すと次の入力欄に進みます。") {
+							typefield.value = "";
+						}
 						typefield.disabled = false;
 						typefield.focus();
 					}
 				}
 			}
+		}
+
+		function keyUp() {
+			// タイピング文の保存
+			var sentences = "";
+
+			for (var i = 1; i <= 4; i++) {
+				var sentence = document.getElementById(`typingfield-${i}`);
+				if (sentence.disabled == false) {
+					sentence_text = sentence.value;
+				} else {
+					sentence_text = "";
+				}
+				sentences += sentence_text
+				if (i != 4) {
+					sentences += "|"
+				}
+			}
+			console.log(sentences);
+			sentenceLogs.push(sentences);
 		}
 
 		async function buttonPressed() {
@@ -128,6 +157,22 @@
 					await osql.connect(sql);
 				}
 
+				// - Sentences登録
+				var sentence_text;
+				var sentence_time;
+				// var sqls = [];
+				for (var i = 0; i < sentenceLogs.length; i++) {
+					sentence_text = sentenceLogs[i];
+					sentence_time = keyLogs[i].time;
+					if (key_text == '"') {
+						var sql = `insert into Sentences (sessionid, sentence, time) values (${catch_typingid}, '${sentence_text}', ${sentence_time});`;
+					} else {
+						var sql = `insert into Sentences (sessionid, sentence, time) values (${catch_typingid}, "${sentence_text}", ${sentence_time});`;
+					}
+					// sqls.push(sql);
+					await osql.connect(sql);
+				}
+
 				// await osql.connect(sqls);
 
 				// 表示: 送信完了メッセージ
@@ -151,16 +196,16 @@
 	<hr>
 	<div style="font-size: 15pt;">1. <B>ジムで体を鍛えているよ</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zimudekaradawokitaeteiruyo</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-1" spellcheck="false" rows="1" cols="100" disabled>「スペースキー」を押すと入力を開始します。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-1" spellcheck="false" rows="1" cols="100" onkeyup="keyUp()" disabled>「スペースキー」を押すと入力を開始します。</textarea>
 	<div style="font-size: 15pt;">2. <B>豆腐は大豆からできています</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toufuhadaizukaradekiteimasu</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-2" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-2" spellcheck="false" rows="1" cols="100" onkeyup="keyUp()" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
 	<div style="font-size: 15pt;">3. <B>リビングにジャニーズのポスターを貼る</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ribinngunijyani-zunoposuta-woharu</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-3" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-3" spellcheck="false" rows="1" cols="100" onkeyup="keyUp()" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
 	<div style="font-size: 15pt;">4. <B>If you understand this question please call me</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you understand this question please call me</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-4" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-4" spellcheck="false" rows="1" cols="100" onkeyup="keyUp()" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
 	
 	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
 	<!-- <br>
