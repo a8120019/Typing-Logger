@@ -241,7 +241,7 @@
 		function showTimes() {
 			var vidfile = document.getElementById("video");
 			var timeNum = vidfile.currentTime;
-			document.getElementById("now-time").value = timeNum;
+			document.getElementById("now-time").innerHTML = timeNum;
 		}
 
 		function buttonPrevious() {
@@ -263,20 +263,40 @@
 			vidfile.currentTime = Number(timeList[timeBox]);
 			// 前のキー
 			if (timeBox > 0) {
-				document.getElementById("previous-key").innerHTML = keyList[timeBox - 1];
+				if (keyList[timeBox - 1] == " ") {
+					var key_previous = "Space";
+				} else {
+					var key_previous = keyList[timeBox - 1];
+				}
 			} else {
-				document.getElementById("previous-key").innerHTML = "最初";
+				var key_previous = "最初";
 			}
+
+
 			// 今のキー
 
-			document.getElementById("now-key").innerHTML = keyList[timeBox];
+			if (keyList[timeBox] == " ") {
+				var key_now = "Space";
+			} else {
+				var key_now = keyList[timeBox];
+			}
 
 			// 次のキー
 			if (timeBox < keyList.length) {
-				document.getElementById("next-key").innerHTML = keyList[timeBox + 1];
+				if (keyList[timeBox + 1] == " ") {
+					var key_next = "Space";
+				} else {
+					var key_next = keyList[timeBox + 1];
+				}
 			} else {
-				document.getElementById("next-key").innerHTML = "最後";
+				var key_next = "最後";
 			}
+
+			// 表示
+			// document.getElementById("previous-key").innerHTML = key_previous;
+			document.getElementById("now-key").innerHTML = "<b>" + key_now + "</b>";
+			// document.getElementById("next-key").innerHTML = key_next;
+
 		}
 
 	</script>
@@ -291,7 +311,7 @@
 		<br>
 		<input type="file" id="upload" accept="video/*" onchange="vidChanger(this)">
 		<br>
-		<center>現在の時間: <span id="now-time">
+		<center>現在の時間: <span id="now-time"></span>
 		<br>
 		<span id="previous-key"></span> <button id="previous-button" onclick="buttonPrevious()">前のキー</button> <span id="now-key"></span> <button id="next-button" onclick="buttonNext()">次のキー</button> <span id="next-key"></span>
 		</center>
