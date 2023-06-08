@@ -138,7 +138,7 @@
 			// 動画をスペースの時間に合わせる
 			timeBox = 0;
 
-			showNowKey()
+			showNowKey();
 		}
 
 		function showTimes() {
@@ -150,14 +150,14 @@
 			if (timeBox > 0) {
 				timeBox = timeBox - 1;
 			}
-			showNowKey()
+			showNowKey();
 		}
 
 		function buttonNext() {
 			if (timeBox < keyList.length - 1) {
 				timeBox = timeBox + 1;
 			}
-			showNowKey()
+			showNowKey();
 		}
 
 		function showNowKey() {
@@ -183,7 +183,7 @@
 			}
 
 			// 次のキー
-			if (timeBox < keyList.length) {
+			if (timeBox < keyList.length - 1) {
 				if (keyList[timeBox + 1] == " ") {
 					var key_next = "Space";
 				} else {
@@ -198,6 +198,18 @@
 			document.getElementById("now-key").innerHTML = "<b>" + key_now + "</b>";
 			// document.getElementById("next-key").innerHTML = key_next;
 
+		}
+
+		function movieMoving() {
+			var time_first;
+
+			// 前キーの時間設定
+			time_first = timeList[timeBox] - 0.5;
+
+			vidfile.currentTime = time_first;
+			vidfile.play();
+			setTimeout(vidfile.pause(), 1000);
+			setTimeout(vidfile.currentTime = timeList[timeBox], 1000);
 		}
 
 		function videoRotateLeft() {
@@ -230,6 +242,8 @@
 	<center>現在の時間: <span id="now-time"></span>
 	<br>
 	<span id="previous-key"></span> <button id="previous-button" onclick="buttonPrevious()">前のキー</button> <span id="now-key"></span> <button id="next-button" onclick="buttonNext()">次のキー</button> <span id="next-key"></span>
+	<br>
+	<button id="movie_move" onclick="movieMoving()">動画確認</button>
 	</center>
 	<br>
 	SessionID: <input id="keyboard-id" type="number">
