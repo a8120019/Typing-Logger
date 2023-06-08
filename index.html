@@ -114,81 +114,36 @@
 </head>
 
 <body>
-	<h1>指遣い測定システム</h1>
-	下の4つの文をタイピングし、その様子を手とキーボードが映るように撮影してください。
-	<br>
-	始める前に、入力モードが「半角」になっていることを確認してください。
-	<br>
-	撮影を開始したら、スペースキーを押してタイピングを開始してください。
+	<h1>指使い測定システム</h1>
+	下の4つの文を入力欄にタイピングし、その様子を撮影してください。
+	タイピングが終わったら、「送信」ボタンを押してください。
 	<hr>
-	<div style="font-size: 14pt;">
-	<table>
-		<tr>
-			<td>
-				1. ジムで体を鍛えているよ
-			</td>
-			<td rowspan="2">
-				<img src="Enter_Picture.png" height="20%" width="20%">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				zimudekaradawokitaeteiruyo
-			</td>
-		</tr>
-	</table>
+	<div style="font-size: 15pt;">
+	1. ジムで体を鍛えているよ
 	<br>
-
-	<table>
-		<tr>
-			<td>
-				2. 豆腐は大豆からできています
-			</td>
-			<td rowspan="2">
-				<img src="Enter_Picture.png" height="20%" width="20%">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				toufuhadaizukaradekiteimasu
-			</td>
-		</tr>
-	</table>
+	zimudekaradawokitaeteiruyo <img src="Enter_Picture.png" height="1%" width="1%">
 	<br>
-
-	<table>
-		<tr>
-			<td>
-				3. リビングにジャニーズのポスターを貼る
-			</td>
-			<td rowspan="2">
-				<img src="Enter_Picture.png" height="20%" width="20%">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				ribinngunijani-zunoposuta-woharu
-			</td>
-		</tr>
-	</table>
 	<br>
-
-	<table>
-		<tr>
-			<td>
-				4. If you understand this question please call me
-			</td>
-			<td rowspan="2">
-				<img src="Enter_Picture.png" height="20%" width="20%">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				if you understand this question please call me
-			</td>
-		</tr>
-	</table>
+	2. 豆腐は大豆からできています
+	<br>
+	toufuhadaizukaradekiteimasu <img src="Enter_Picture.png" height="1%" width="1%">
+	<br>
+	<br>
+	3. リビングにジャニーズのポスターを貼る
+	<br>
+	ribinngunijani-zunoposuta-woharu <img src="Enter_Picture.png" height="1%" width="1%">
+	<br>
+	<br>
+	4. If you understand this question please call me
+	<br>
+	if you understand this question please call me <img src="Enter_Picture.png" height="1%" width="1%">
 	</div>
+	<br>
+	<textarea id="typingfield" rows="5" cols="100" readonly>開始前に、入力モードを「半角」に設定してください。
+
+「スペースキー」を押すと開始します。</textarea>
+	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
+	<br>
 	<br>
 	完成例:
 	<br>
@@ -202,11 +157,6 @@
 		if you understand this question please call me
 	</div>
 	<br>
-
-	<textarea id="typingfield" rows="5" cols="100" readonly>開始前に、入力モードを「半角」に設定してください。
-
-「スペースキー」を押すと開始します。</textarea>
-	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
 	<hr>
 	<a href="javascript:void(0)" onclick="osql.logout()">ログアウト</a>
 
