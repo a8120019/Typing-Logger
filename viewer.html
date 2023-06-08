@@ -27,6 +27,8 @@
 		var timeBox;
 
 		// 動画編集用変数
+		var vidfile;
+
 		var rotateAngle = 0;
 
 		// アップロードした画像を表示する関数
@@ -42,7 +44,7 @@
 				// console.log(reader.result);  // ログ出力
 
 				// imgタグの操作
-				var vidfile = document.getElementById("video");
+				vidfile = document.getElementById("video");
 				vidfile.src = reader.result;
 			}
 
@@ -51,8 +53,6 @@
 		}
 
 		function controlVideo() {
-			var vidfile = document.getElementById("video");
-
 			if (vidfile.paused) {  // 動画が止まっている場合の処理
 				vidfile.play();
 				// setInterval(drawCanvas, 1000 / 30);
@@ -65,8 +65,6 @@
 		function resetVideo() {
 			clearInterval(drawCanvas);
 
-			var vidfile = document.getElementById("video");
-
 			vidfile.pause();
 			vidfile.currentTime = 0;
 
@@ -77,15 +75,12 @@
 			var timeNumber = document.getElementById("time").value;
 			console.log(timeNumber);
 			if (time) {
-				var vidfile = document.getElementById("video");
-
 				vidfile.pause();
 				vidfile.currentTime = timeNumber;
 			}
 		}
 
 		function timeVideo() {
-			var vidfile = document.getElementById("video");
 			console.log(vidfile.currentTime);
 		}
 
@@ -136,7 +131,6 @@
 		}
 
 		function showTimes() {
-			var vidfile = document.getElementById("video");
 			var timeNum = vidfile.currentTime;
 			document.getElementById("now-time").innerHTML = timeNum;
 		}
@@ -156,7 +150,6 @@
 		}
 
 		function showNowKey() {
-			var vidfile = document.getElementById("video");
 			vidfile.currentTime = Number(timeList[timeBox]);
 			// 前のキー
 			if (timeBox > 0) {
@@ -202,7 +195,6 @@
 				rotateAngle = 270;
 			}
 
-			var vidfile = document.getElementById("video");
 			vidfile.className = "rotate-" + rotateAngle;
 		}
 
@@ -212,7 +204,6 @@
 				rotateAngle = 0;
 			}
 
-			var vidfile = document.getElementById("video");
 			vidfile.className = "rotate-" + rotateAngle;
 		}
 
