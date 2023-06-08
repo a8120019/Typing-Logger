@@ -46,6 +46,17 @@
 				// imgタグの操作
 				vidfile = document.getElementById("video");
 				vidfile.src = reader.result;
+				var height = vidfile.height;
+				var width = vidfile.width;
+				// if (width > height) {
+				// 	vidfile.height = 720;
+				// 	vidfile.width = 1280;
+				// } else {
+				// 	vidfile.height = 1280;
+				// 	vidfile.width = 720;
+				// }
+				vidfile.height = 720;
+				vidfile.width = 1280;
 			}
 
 			// 読み込み開始 2
