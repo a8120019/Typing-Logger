@@ -14,6 +14,7 @@
 
 	<script>
 		osql.requireLogin();
+		var sending = false;
 		var typefield;
 		var keyLogs = [];
 		document.addEventListener("keydown", keyPressEvent);
@@ -48,7 +49,7 @@
 				var key_type = e.code;
 				var now = new Date();
 				var key_time = now.getTime();
-			} else if (typefield.readOnly == false && typefield.disabled == false) {  // 計測開始後の処理
+			} else if (typefield.disabled == false) {  // 計測開始後の処理
 				var key_type = e.key;
 				var now = new Date();
 				var key_time = now.getTime();
@@ -87,10 +88,15 @@
 			// var typefield = document.getElementById("typingfield");
 			// console.log(typefield.value);
 
-			if (typefield.readOnly == false && typefield.disabled == false) {  // 記録を開始している時のみ有効
+			if (sending == false) {  // 未送信の場合のみ有効
+
+				sending = true;
 
 				// 操作無効化
-				typefield.disabled = true;
+				document.getElementById("typingfield-1").disabled = true;
+				document.getElementById("typingfield-2").disabled = true;
+				document.getElementById("typingfield-3").disabled = true;
+				document.getElementById("typingfield-4").disabled = true;
 
 				// 表示: 送信中
 				document.getElementById("confirm").innerHTML = "送信中...";
@@ -137,7 +143,7 @@
 
 <body>
 	<h1>指使い測定システム</h1>
-	1. キーボードの真上から撮るように、撮影を開始してください。
+	1. キーボードを真上から撮るように、撮影を開始してください。
 	<br>
 	2. 下の4つの文をアルファベットでタイピングしてください。
 	<br>
