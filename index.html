@@ -14,7 +14,7 @@
 
 	<script>
 		osql.requireLogin();
-		var sending = false;
+		var sending = "none";
 		var typefield;
 		var keyLogs = [];
 		var sentenceLogs = [];
@@ -40,7 +40,8 @@
 			if (!typefield) {
 				typefield = document.getElementById("typingfield-1");
 			}
-			if (e.keyCode == 32 && typefield.disabled == true) {  // Spaceを押した際の処理
+			if (e.keyCode == 32 && sending == "none") {  // Spaceを押した際の処理
+				sending = false;
 				// textareaの内容を空に
 				typefield.value = "";
 				// textareaの編集を可能に
@@ -65,16 +66,20 @@
 
 				if (key_type == "Enter") {
 					var current = document.activeElement;
-					for (var i = 1; i <= 3; i++) {
-						if (current.id == `typingfield-${i}`) {
-							typefield = document.getElementById(`typingfield-${i + 1}`);
+					if (current.id == "typingfield-4") {
+						typefield.blur();
+					} else {
+						for (var i = 1; i <= 3; i++) {
+							if (current.id == `typingfield-${i}`) {
+								typefield = document.getElementById(`typingfield-${i + 1}`);
+							}
 						}
+						if (typefield.value == "「エンターキー」を押すと次の入力欄に進みます。") {
+							typefield.value = "";
+						}
+						typefield.disabled = false;
+						typefield.focus();
 					}
-					if (typefield.value == "「エンターキー」を押すと次の入力欄に進みます。") {
-						typefield.value = "";
-					}
-					typefield.disabled = false;
-					typefield.focus();
 				}
 			}
 		}
@@ -129,8 +134,6 @@
 
 				// 表示: 送信完了メッセージ
 				document.getElementById("confirm").innerHTML = "送信完了!";
-			} else {  // 開始していない時はエラーメッセージ
-				document.getElementById("confirm").innerHTML = "記録を開始していません";
 			}
 		}
 
@@ -148,16 +151,16 @@
 	<hr>
 	<div style="font-size: 15pt;">1. <B>ジムで体を鍛えているよ</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zimudekaradawokitaeteiruyo</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-1" spellcheck="false" rows="1" cols="100" disabled>「スペースキー」を押すと入力を開始します。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input id="typingfield-1" spellcheck="false" value="「スペースキー」を押すと入力を開始します。" size="70" disabled>
 	<div style="font-size: 15pt;">2. <B>豆腐は大豆からできています</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toufuhadaizukaradekiteimasu</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-2" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input id="typingfield-2" spellcheck="false" value="「エンターキー」を押すと次の入力欄に進みます。" size="70" disabled>
 	<div style="font-size: 15pt;">3. <B>リビングにジャニーズのポスターを貼る</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ribinngunijyani-zunoposuta-woharu</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-3" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input id="typingfield-3" spellcheck="false" value="「エンターキー」を押すと次の入力欄に進みます。" size="70" disabled>
 	<div style="font-size: 15pt;">4. <B>If you understand this question please call me</B> <img src="Enter_Picture.png" height="1%" width="1%"></div>
 	<div style="font-size: 12pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you understand this question please call me</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;<textarea id="typingfield-4" spellcheck="false" rows="1" cols="100" disabled>「エンターキー」を押すと次の入力欄に進みます。</textarea>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input id="typingfield-4" spellcheck="false" value="「エンターキー」を押すと次の入力欄に進みます。" size="70" disabled>
 	
 	<button onclick="buttonPressed()">送信</button>　<span id="confirm"></span>
 	<!-- <br>
