@@ -34,8 +34,9 @@
 				html += "<li>";
 
 				html += `<a href="javascript:void(0)" onclick=showLogs(${typings[i].id})>`;
-				html += `${typings[i].date}`;
+				html += `${typings[i].id}`
 				html += "</a>";
+				html = html + " " + `${typings[i].date}`;
 				
 				html += "</li>";
 			}
