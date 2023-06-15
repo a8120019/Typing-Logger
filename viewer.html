@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<!-- スタイルシートの読み込み -->
-	<link rel="stylesheet" href="stylesheet.css">
+	<link rel="stylesheet" href="viewer.css">
 	<!-- 3つのライブラリを読み込む -->
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
@@ -61,6 +61,25 @@
 
 			// 読み込み開始 2
 			reader.readAsDataURL(file);
+		}
+
+		function showMovie() {
+			// imgタグの操作
+			var url = document.getElementById("movie-url");
+
+			vidfile = document.getElementById("video");
+			vidfile.src = url;
+			var height = vidfile.height;
+			var width = vidfile.width;
+			// if (width > height) {
+			// 	vidfile.height = 720;
+			// 	vidfile.width = 1280;
+			// } else {
+			// 	vidfile.height = 1280;
+			// 	vidfile.width = 720;
+			// }
+			vidfile.height = 720;
+			vidfile.width = 1280;
 		}
 
 		function controlVideo() {
@@ -236,6 +255,8 @@
 
 <body>
 	<center><video id="video"></video></center>
+	<br>
+	<!-- <input type="url" id="movie-url"> <button id="reader-url" onclick="showMovie()">動画読込</button> -->
 	<br>
 	<input type="file" id="upload" accept="video/*" onchange="vidChanger(this)">
 	<br>
