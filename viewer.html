@@ -249,6 +249,19 @@
 			vidfile.className = "rotate-" + rotateAngle;
 		}
 
+		function makeTables() {
+			var html = "<table border='1'>";
+			
+			var key_example = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "BS", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "enter", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "Space"];
+
+			for (var i = 0; i < key_example.length; i++) {  // 列ループ
+				html += "<tr>"
+				for (var j = 0; j < key_example[i].length; j++) {  // グループループ
+
+				}
+			}
+		}
+
 	</script>
 
 </head>
@@ -290,6 +303,8 @@
 	<br>
 	<button id="rotate-left" onclick="videoRotateLeft()">LEFT</button> <button id="rotate-right" onclick="videoRotateRight()">RIGHT</button>
 	<hr>
+	<h3>Table</h3>
+	<div id="finger-tables"></div>
 </body>
 
 </html>
