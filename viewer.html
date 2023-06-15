@@ -111,7 +111,7 @@
 		}
 
 		function timeVideo() {
-			console.log(vidfile.currentTime);
+			document.getElementById("time-viewer").innerHTML = vidfile.currentTime;
 		}
 
 		function showResult(index) {
@@ -257,7 +257,6 @@
 	<center><video id="video"></video></center>
 	<br>
 	<!-- <input type="url" id="movie-url"> <button id="reader-url" onclick="showMovie()">動画読込</button> -->
-	<br>
 	<input type="file" id="upload" accept="video/*" onchange="vidChanger(this)">
 	<br>
 	<center>現在の時間: <span id="now-time"></span>
@@ -267,19 +266,27 @@
 	<button id="movie_move" onclick="movieMoving()">動画確認</button>
 	</center>
 	<br>
-	SessionID: <input id="keyboard-id" type="number">
+	<button id="start" onclick="controlVideo()">start / stop</button>
+	<button id="stop" onclick="resetVideo()">reset</button>
 	<br>
-	スペースキーを押した時間: <input id="space-time" type="number"> <button id="space-time-decision" onclick="keyTimes()">適用</button>
+	<input type="number" id="time">
+	<button id="select" onclick="selectVideo()">select</button>
+	<br>
+	<button id="stop" onclick="timeVideo()">time check</button>
+	<br>
+	<span id="time-viewer"></span>
 	<!-- <br> -->
 	<!-- <canvas id="input" width="680" height="454"></canvas> -->
 	<!--  認識した手の形状を可視化した映像（出力）  -->
 	<!-- <canvas id="output" width="680" height="454"></canvas> -->
 	<hr>
 	<h3>Console</h3>
-	<br>
 	<!-- <button id="videoload" onclick="drawCanvas()">video load</button> -->
 	<!-- <br> -->
 	<!-- <br> -->
+	SessionID: <input id="keyboard-id" type="number">
+	<br>
+	スペースキーを押した時間: <input id="space-time" type="number"> <button id="space-time-decision" onclick="keyTimes()">適用</button>
 	<button id="start" onclick="controlVideo()">start / stop</button>
 	<button id="stop" onclick="resetVideo()">reset</button>
 	<br>
